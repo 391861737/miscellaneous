@@ -24,7 +24,7 @@ while read line
 do
     pair=($line)
     hmap[${pair[0]}]=${pair[1]}
-done < hlist
+done < $(cd `dirname $0`; pwd)/hlist
 # Restore IFS
 IFS=$OIFS
 
@@ -107,7 +107,7 @@ function run {
     ssh root@$1 <<EOF
 set -v
 cd $2
-$3 $4 $5 $6 $7 $8 $9
+$3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17}
 exit
 EOF
 }
@@ -121,10 +121,6 @@ function html {
 }
 
 function cmd {
-    if [ "$2" = "" ]; then
-        usage
-        exit
-    fi
     case $1 in 
         "pick" ) echo pick;;
         "run" ) echo run;;
@@ -142,7 +138,7 @@ function cmd {
 function all {
     for k in ${!hmap[@]}
     do
-        $(cmd $1) ${hmap[$k]} $2 $3 $4 $5 $6 $7 $8
+        $(cmd $1) ${hmap[$k]} $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16}
     done
 }
 
@@ -154,7 +150,7 @@ function init {
 function usage {
     echo "usage: "
     echo "  pick <hostname>"
-    echo "  run <hostname> <cmd> ..."
+    echo "  run <hostname> <dir> <cmd> ..."
     echo "  remember <hostname>"
     echo "  impress <hostname>"
     echo "  put <hostname> <filename>"
@@ -166,9 +162,10 @@ function usage {
 
 # -------------------- api        ---------------------#
 case $1 in 
+    init) init;;
     pick) pick $2;;
-    run|remember|impress|put|get|act|html ) $(cmd $1) $(pick $2) $3 $4 $5 $6 $7 $8 $9;;
-    all) all $2 $3 $4 $5 $6 $7 $8 $9;;
+    run|remember|impress|put|get|act|html ) $(cmd $1) $(pick $2) $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16} ${17};;
+    all) all $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} ${15} ${16};;
     "") exit;;
 	*) usage
 esac
