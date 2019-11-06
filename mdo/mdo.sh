@@ -29,7 +29,7 @@ done < $(cd `dirname $0`; pwd)/hlist
 IFS=$OIFS
 
 # -------------------- functions  ---------------------#
-# Pick a key's value from hmap, and if there's none, then you'll get itself for its value
+# Pick a key's value from hmap, and if there's none, then you'll get itself as the value
 # 从hmap中拣选别名所对应的ip地址或主机名
 function pick {
     local v=${hmap[$1]}
